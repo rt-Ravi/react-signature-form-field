@@ -1,0 +1,89 @@
+.rsl-signature-con {
+  position: relative;
+}
+
+/* MENU BUTTON */
+.rsl-menu-con {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+}
+
+.rsl-menu-icon {
+  width: 40px;
+  height: 40px;
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* DROPDOWN */
+.rsl-signature-menu {
+  margin-top: 10px;
+  width: 180px;
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* BUTTONS */
+.rsl-signature-menu button {
+  padding: 8px;
+  border: none;
+  background: #f3f4f6;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  color: #111;
+}
+
+.rsl-signature-menu button:hover {
+  background: #e5e7eb;
+}
+
+/* INPUT GROUP */
+.rsl-menu-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+}
+
+/* CANVAS */
+.rsl-canvas {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* HEADER */
+.rsl-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+/* CLOSE BUTTON */
+.rsl-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #555;
+}
+
+.rsl-close-btn:hover {
+  color: red;
+}
