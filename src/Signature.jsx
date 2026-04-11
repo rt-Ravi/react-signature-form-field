@@ -8,7 +8,7 @@ import React, {
 import SignaturePad from "signature_pad";
 
 const Signature = forwardRef(
-  ({ style = {}, className = "", value, onChange, height = "300px" }, ref) => {
+  ({ style = {}, className = "", menuClass = "", buttonClass = "", canvasClass = "", value, onChange, height = "300px", renderMenu }, ref) => {
     const canvasRef = useRef(null);
     const sigPadRef = useRef(null);
     const undoDataRef = useRef([]);
@@ -53,7 +53,7 @@ const Signature = forwardRef(
         .rsl-signature-menu {
           margin-top: 10px;
           width: 180px;
-          background: white;
+          background: var(--rsl-menu-bg, white);
           border-radius: 10px;
           padding: 10px;
           box-shadow: 0 10px 25px rgba(0,0,0,0.15);
@@ -67,8 +67,8 @@ const Signature = forwardRef(
         .rsl-signature-menu button {
           padding: 8px;
           border: none;
-          background: #f3f4f6;
-          border-radius: 6px;
+          background: var(--rsl-btn-bg, #f3f4f6);
+          color: var(--rsl-btn-color, black);
           cursor: pointer;
           text-align: left;
           color: #111;
@@ -123,7 +123,7 @@ const Signature = forwardRef(
     const [bgColor, setBgColor] = useState("#ffffff");
     const [strokeWidth, setStrokeWidth] = useState(2);
 
-    useEffect(()=>{
+    useEffect(() => {
 
       if (document.getElementById("rsl-styles")) return;
 
@@ -242,6 +242,19 @@ const Signature = forwardRef(
       a.click();
     };
 
+    const getSignatureBase64 = () => {
+      if (sigPadRef.current.isEmpty()) return "";
+      return sigPadRef.current.toDataURL();
+    };
+
+    const getSignatureBlob = async () => {
+      if (sigPadRef.current.isEmpty()) return null;
+
+      const dataURL = sigPadRef.current.toDataURL();
+      return await fetch(dataURL).then(res => res.blob());
+    };
+
+
     // ✅ Check empty
     const isEmpty = () => sigPadRef.current.isEmpty();
 
@@ -251,86 +264,164 @@ const Signature = forwardRef(
       clear,
       download,
       isEmpty,
+      getSignatureBase64,
+      getSignatureBlob,
+
     }));
 
+    // ✅ API FOR renderMenu
+    const api = {
+      undo,
+      redo,
+      clear,
+      download,
+      isEmpty,
+      penColor,
+      bgColor,
+      strokeWidth,
+      setPenColor,
+      setBgColor,
+      setStrokeWidth,
+      closeMenu: () => setMenuOpen(false),
+      openMenu: () => setMenuOpen(true)
+    };
+
     return (
-      <div className={`rsl-signature-con`}>
+      <div className={`rsl-signature-con ${className}`}>
+
         {/* MENU */}
         <div className="rsl-menu-con">
-          <div
-            className="rsl-menu-icon"
-            onClick={() => setMenuOpen(true)}
-          >
-            ☰
-          </div>
 
-          {menuOpen && (
-            <div className="rsl-signature-menu">
-              <div className="rsl-menu-header">
-                <span>Tools</span>
-                <button type="button"
-                  className="rsl-close-btn"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  ✕
-                </button>
+          {renderMenu ? (
+            // 🔥 CUSTOM MENU (USER CONTROL)
+            renderMenu(api)
+          ) : (
+            // ✅ DEFAULT MENU (WITH SVG)
+            <>
+              <div
+                className={`rsl-menu-icon ${menuClass}`}
+                onClick={() => setMenuOpen(true)}
+              >
+                ☰
               </div>
 
-              <button type="button" className="rsl-undo-btn" onClick={undo}>Undo<svg xmlns="http://www.w3.org/2000/svg" fill="#000000" width="20px" viewBox="0 0 24 24">
-                <path d="M7.18,4,8.6,5.44,6.06,8h9.71a6,6,0,0,1,0,12h-2V18h2a4,4,0,0,0,0-8H6.06L8.6,12.51,7.18,13.92,2.23,9Z" />
-              </svg></button>
-              <button type="button" className="rsl-redo-btn" onClick={redo}>Redo<svg xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 24 24" fill="none">
-                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2929 3.29289C15.6834 2.90237 16.3166 2.90237 16.7071 3.29289L21.4142 8L16.7071 12.7071C16.3166 13.0976 15.6834 13.0976 15.2929 12.7071C14.9024 12.3166 14.9024 11.6834 15.2929 11.2929L17.5858 9H10C7.23858 9 5 11.2386 5 14C5 16.7614 7.23857 19 10 19H15.8462C16.3984 19 16.8462 19.4477 16.8462 20C16.8462 20.5523 16.3984 21 15.8462 21H10C6.134 21 3 17.866 3 14C3 10.134 6.13401 7 10 7H17.5858L15.2929 4.70711C14.9024 4.31658 14.9024 3.68342 15.2929 3.29289Z" fill="#0F1729" />
-              </svg></button>
-              <button type="button" onClick={clear} className="rsl-clear-btn">Clear
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="20px"><path d="M232.7 69.9C237.1 56.8 249.3 48 263.1 48L377 48C390.8 48 403 56.8 407.4 69.9L416 96L512 96C529.7 96 544 110.3 544 128C544 145.7 529.7 160 512 160L128 160C110.3 160 96 145.7 96 128C96 110.3 110.3 96 128 96L224 96L232.7 69.9zM128 208L512 208L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 208zM216 272C202.7 272 192 282.7 192 296L192 488C192 501.3 202.7 512 216 512C229.3 512 240 501.3 240 488L240 296C240 282.7 229.3 272 216 272zM320 272C306.7 272 296 282.7 296 296L296 488C296 501.3 306.7 512 320 512C333.3 512 344 501.3 344 488L344 296C344 282.7 333.3 272 320 272zM424 272C410.7 272 400 282.7 400 296L400 488C400 501.3 410.7 512 424 512C437.3 512 448 501.3 448 488L448 296C448 282.7 437.3 272 424 272z" /></svg>
-              </button>
-              <button type="button" onClick={download} className="rsl-download-btn">Download
-                <svg xmlns="http://www.w3.org/2000/svg" width="20px" viewBox="0 0 24 24" fill="none">
-                  <path d="M17 17H17.01M17.4 14H18C18.9319 14 19.3978 14 19.7654 14.1522C20.2554 14.3552 20.6448 14.7446 20.8478 15.2346C21 15.6022 21 16.0681 21 17C21 17.9319 21 18.3978 20.8478 18.7654C20.6448 19.2554 20.2554 19.6448 19.7654 19.8478C19.3978 20 18.9319 20 18 20H6C5.06812 20 4.60218 20 4.23463 19.8478C3.74458 19.6448 3.35523 19.2554 3.15224 18.7654C3 18.3978 3 17.9319 3 17C3 16.0681 3 15.6022 3.15224 15.2346C3.35523 14.7446 3.74458 14.3552 4.23463 14.1522C4.60218 14 5.06812 14 6 14H6.6M12 15V4M12 15L9 12M12 15L15 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </button>
+              {menuOpen && (
+                <div className="rsl-signature-menu">
 
+                  {/* HEADER */}
+                  <div className="rsl-menu-header">
+                    <span>Tools</span>
+                    <button
+                      type="button"
+                      className="rsl-close-btn"
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      ✕
+                    </button>
+                  </div>
 
+                  {/* UNDO */}
+                  <button
+                    type="button"
+                    className={`rsl-undo-btn ${buttonClass}`}
+                    onClick={undo}
+                  >
+                    Undo
+                    <svg width="20px" viewBox="0 0 24 24">
+                      <path d="M7.18,4 8.6,5.44 6.06,8h9.71a6,6,0,0,1,0,12h-2V18h2a4,4,0,0,0,0-8H6.06L8.6,12.51 7.18,13.92 2.23,9Z" />
+                    </svg>
+                  </button>
 
-              <div className="rsl-menu-group">
-                <label>Pen Color</label>
-                <input
-                  type="color"
-                  value={penColor}
-                  onChange={(e) => setPenColor(e.target.value)}
-                />
-              </div>
+                  {/* REDO */}
+                  <button
+                    type="button"
+                    className={`rsl-redo-btn ${buttonClass}`}
+                    onClick={redo}
+                  >
+                    Redo
+                    <svg width="20px" viewBox="0 0 24 24">
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M15.2929 3.29289C15.6834 2.90237 16.3166 2.90237 16.7071 3.29289L21.4142 8L16.7071 12.7071C16.3166 13.0976 15.6834 13.0976 15.2929 12.7071C14.9024 12.3166 14.9024 11.6834 15.2929 11.2929L17.5858 9H10C7.23858 9 5 11.2386 5 14C5 16.7614 7.23857 19 10 19H15.8462C16.3984 19 16.8462 19.4477 16.8462 20C16.8462 20.5523 16.3984 21 15.8462 21H10C6.134 21 3 17.866 3 14C3 10.134 6.13401 7 10 7H17.5858L15.2929 4.70711C14.9024 4.31658 14.9024 3.68342 15.2929 3.29289Z"
+                      />
+                    </svg>
+                  </button>
 
-              <div className="rsl-menu-group">
-                <label>Background</label>
-                <input
-                  type="color"
-                  value={bgColor}
-                  onChange={(e) => setBgColor(e.target.value)}
-                />
-              </div>
+                  {/* CLEAR */}
+                  <button
+                    type="button"
+                    className={`rsl-clear-btn ${buttonClass}`}
+                    onClick={clear}
+                  >
+                    Clear
+                    <svg width="20px" viewBox="0 0 640 640">
+                      <path d="M232.7 69.9C237.1 56.8 249.3 48 263.1 48L377 48C390.8 48 403 56.8 407.4 69.9L416 96L512 96C529.7 96 544 110.3 544 128C544 145.7 529.7 160 512 160L128 160C110.3 160 96 145.7 96 128C96 110.3 110.3 96 128 96L224 96L232.7 69.9zM128 208L512 208L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 208z" />
+                    </svg>
+                  </button>
 
-              <div className="rsl-menu-group">
-                <label>Stroke</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  value={strokeWidth}
-                  onChange={(e) =>
-                    setStrokeWidth(Number(e.target.value))
-                  }
-                />
-              </div>
-            </div>
+                  {/* DOWNLOAD */}
+                  <button
+                    type="button"
+                    className={`rsl-download-btn ${buttonClass}`}
+                    onClick={download}
+                  >
+                    Download
+                    <svg width="20px" viewBox="0 0 24 24">
+                      <path
+                        d="M12 15V4M12 15L9 12M12 15L15 12M4 20H20"
+                        stroke="black"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </button>
+
+                  {/* PEN COLOR */}
+                  <div className="rsl-menu-group">
+                    <label>Pen Color</label>
+                    <input
+                      type="color"
+                      value={penColor}
+                      onChange={(e) => setPenColor(e.target.value)}
+                    />
+                  </div>
+
+                  {/* BACKGROUND */}
+                  <div className="rsl-menu-group">
+                    <label>Background</label>
+                    <input
+                      type="color"
+                      value={bgColor}
+                      onChange={(e) => setBgColor(e.target.value)}
+                    />
+                  </div>
+
+                  {/* STROKE */}
+                  <div className="rsl-menu-group">
+                    <label>Stroke</label>
+                    <input
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={strokeWidth}
+                      onChange={(e) =>
+                        setStrokeWidth(Number(e.target.value))
+                      }
+                    />
+                  </div>
+
+                </div>
+              )}
+            </>
           )}
         </div>
 
         {/* CANVAS */}
         <canvas
           ref={canvasRef}
-          className={`rsl-canvas ${className}`}
+          className={`rsl-canvas ${canvasClass}`}
           style={{
             height,
             background: bgColor,
@@ -339,6 +430,7 @@ const Signature = forwardRef(
         />
       </div>
     );
+
   }
 );
 
