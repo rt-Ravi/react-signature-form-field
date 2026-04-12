@@ -64,17 +64,79 @@ function App() {
 ```
 
 ## 🎨 Custom Menu
+You can fully customize the menu UI using the renderMenu prop.
+
+This gives you complete control over:
+
+Actions (Undo, Redo, Clear, Download)
+Colors (Pen & Background)
+Stroke width
+Menu visibility
 
 ```jsx
-<Signature
-  renderMenu={({ undo, redo, clear }) => (
-    <div>
-      <button onClick={undo}>Undo</button>
-      <button onClick={redo}>Redo</button>
-      <button onClick={clear}>Clear</button>
-    </div>
-  )}
-/>
+<Signature value={signature} onChange={setSignature} 
+        renderMenu={({
+          undo,
+          redo,
+          clear,
+          download,
+          penColor,
+          bgColor,
+          strokeWidth,
+          setPenColor,
+          setBgColor,
+          setStrokeWidth,
+        }) => (
+          <div style={{ marginBottom: "10px" }}>
+            
+            {/* ACTION BUTTONS */}
+            <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+              <button type="button" onClick={undo}>Undo</button>
+              <button type="button" onClick={redo}>Redo</button>
+              <button type="button" onClick={clear}>Clear</button>
+              <button type="button" onClick={download}>Download</button>
+            </div>
+
+            {/* COLOR CONTROLS */}
+            <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+              <label>
+                Pen:
+                <input
+                  type="color"
+                  value={penColor}
+                  onChange={(e) => setPenColor(e.target.value)}
+                />
+              </label>
+
+              <label>
+                Background:
+                <input
+                  type="color"
+                  value={bgColor}
+                  onChange={(e) => setBgColor(e.target.value)}
+                />
+              </label>
+            </div>
+
+            {/* STROKE CONTROL */}
+            <div style={{ marginBottom: "10px" }}>
+              <label>
+                Stroke: {strokeWidth}
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  value={strokeWidth}
+                  onChange={(e) =>
+                    setStrokeWidth(Number(e.target.value))
+                  }
+                />
+              </label>
+            </div>
+          </div>
+        )}>
+          
+</Signature>
 ```
 
 ## 🎮 Ref API
@@ -86,7 +148,7 @@ sigRef.current.undo();
 sigRef.current.redo();
 sigRef.current.clear();
 sigRef.current.download();
-
+sigRef.current.isEmpty();
 const base64 = sigRef.current.getSignatureBase64();
 const blob = await sigRef.current.getSignatureBlob();
 
@@ -99,6 +161,37 @@ const blob = await sigRef.current.getSignatureBlob();
 ```js
 import { dataURLtoBlob } from "react-signature-library";
 const blob = dataURLtoBlob(base64);
+```
+
+## 🌐 Backend Integration (Upload Signature)
+You can send the signature to your backend using Base64 or Blob.
+
+## 📌 Upload as Blob (Recommended)
+
+```js
+const blob = await sigRef.current.getSignatureBlob();
+
+const formData = new FormData();
+formData.append("signature", blob, "signature.png");
+
+await fetch("http://localhost:5000/upload-blob", {
+  method: "POST",
+  body: formData
+});
+```
+
+## 📌 Upload as Base64
+
+```js
+const base64 = sigRef.current.getSignatureBase64();
+
+await fetch("http://localhost:5000/upload-base64", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({ signature: base64 })
+});
 ```
 
 ## 🙌 Author
