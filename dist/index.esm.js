@@ -1188,31 +1188,34 @@ var Signature = /*#__PURE__*/forwardRef(function (_ref, ref) {
       getSignatureBlob: getSignatureBlob
     };
   });
-  return /*#__PURE__*/React.createElement("div", {
-    className: "rsl-signature-con ".concat(className)
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "rsl-menu-con"
-  }, renderMenu ?
-  // 🔥 CUSTOM MENU (USER CONTROL)
-  renderMenu({
+
+  // ✅ API FOR renderMenu
+  var api = {
     undo: undo,
     redo: redo,
     clear: clear,
     download: download,
+    isEmpty: isEmpty,
     penColor: penColor,
     bgColor: bgColor,
     strokeWidth: strokeWidth,
     setPenColor: setPenColor,
     setBgColor: setBgColor,
     setStrokeWidth: setStrokeWidth,
-    openMenu: function openMenu() {
-      return setMenuOpen(true);
-    },
     closeMenu: function closeMenu() {
       return setMenuOpen(false);
     },
-    menuOpen: menuOpen
-  }) :
+    openMenu: function openMenu() {
+      return setMenuOpen(true);
+    }
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "rsl-signature-con ".concat(className)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rsl-menu-con"
+  }, renderMenu ?
+  // 🔥 CUSTOM MENU (USER CONTROL)
+  renderMenu(api) :
   /*#__PURE__*/
   // ✅ DEFAULT MENU (WITH SVG)
   React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
