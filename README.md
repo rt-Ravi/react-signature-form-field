@@ -79,17 +79,24 @@ function App() {
 
 ## 🎮 Ref API
 
-- undo()
-- redo()
-- clear()
-- download()
-- getSignatureBase64()
-- getSignatureBlob()
+```jsx
+const sigRef = useRef(null);
+
+sigRef.current.undo();
+sigRef.current.redo();
+sigRef.current.clear();
+sigRef.current.download();
+
+const base64 = sigRef.current.getSignatureBase64();
+const blob = await sigRef.current.getSignatureBlob();
+
+/>
 
 ## 🧰 Utility
 
 ```js
 import { dataURLtoBlob } from "react-signature-library";
+const blob = dataURLtoBlob(base64);
 ```
 
 ## 🙌 Author
