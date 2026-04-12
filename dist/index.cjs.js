@@ -10,6 +10,31 @@ function _arrayLikeToArray(r, a) {
 function _arrayWithHoles(r) {
   if (Array.isArray(r)) return r;
 }
+function asyncGeneratorStep(n, t, e, r, o, a, c) {
+  try {
+    var i = n[a](c),
+      u = i.value;
+  } catch (n) {
+    return void e(n);
+  }
+  i.done ? t(u) : Promise.resolve(u).then(r, o);
+}
+function _asyncToGenerator(n) {
+  return function () {
+    var t = this,
+      e = arguments;
+    return new Promise(function (r, o) {
+      var a = n.apply(t, e);
+      function _next(n) {
+        asyncGeneratorStep(a, r, o, _next, _throw, "next", n);
+      }
+      function _throw(n) {
+        asyncGeneratorStep(a, r, o, _next, _throw, "throw", n);
+      }
+      _next(void 0);
+    });
+  };
+}
 function _defineProperty(e, r, t) {
   return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, {
     value: t,
@@ -65,6 +90,114 @@ function _objectSpread2(e) {
     });
   }
   return e;
+}
+function _regenerator() {
+  /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/babel/babel/blob/main/packages/babel-helpers/LICENSE */
+  var e,
+    t,
+    r = "function" == typeof Symbol ? Symbol : {},
+    n = r.iterator || "@@iterator",
+    o = r.toStringTag || "@@toStringTag";
+  function i(r, n, o, i) {
+    var c = n && n.prototype instanceof Generator ? n : Generator,
+      u = Object.create(c.prototype);
+    return _regeneratorDefine(u, "_invoke", function (r, n, o) {
+      var i,
+        c,
+        u,
+        f = 0,
+        p = o || [],
+        y = false,
+        G = {
+          p: 0,
+          n: 0,
+          v: e,
+          a: d,
+          f: d.bind(e, 4),
+          d: function (t, r) {
+            return i = t, c = 0, u = e, G.n = r, a;
+          }
+        };
+      function d(r, n) {
+        for (c = r, u = n, t = 0; !y && f && !o && t < p.length; t++) {
+          var o,
+            i = p[t],
+            d = G.p,
+            l = i[2];
+          r > 3 ? (o = l === n) && (u = i[(c = i[4]) ? 5 : (c = 3, 3)], i[4] = i[5] = e) : i[0] <= d && ((o = r < 2 && d < i[1]) ? (c = 0, G.v = n, G.n = i[1]) : d < l && (o = r < 3 || i[0] > n || n > l) && (i[4] = r, i[5] = n, G.n = l, c = 0));
+        }
+        if (o || r > 1) return a;
+        throw y = true, n;
+      }
+      return function (o, p, l) {
+        if (f > 1) throw TypeError("Generator is already running");
+        for (y && 1 === p && d(p, l), c = p, u = l; (t = c < 2 ? e : u) || !y;) {
+          i || (c ? c < 3 ? (c > 1 && (G.n = -1), d(c, u)) : G.n = u : G.v = u);
+          try {
+            if (f = 2, i) {
+              if (c || (o = "next"), t = i[o]) {
+                if (!(t = t.call(i, u))) throw TypeError("iterator result is not an object");
+                if (!t.done) return t;
+                u = t.value, c < 2 && (c = 0);
+              } else 1 === c && (t = i.return) && t.call(i), c < 2 && (u = TypeError("The iterator does not provide a '" + o + "' method"), c = 1);
+              i = e;
+            } else if ((t = (y = G.n < 0) ? u : r.call(n, G)) !== a) break;
+          } catch (t) {
+            i = e, c = 1, u = t;
+          } finally {
+            f = 1;
+          }
+        }
+        return {
+          value: t,
+          done: y
+        };
+      };
+    }(r, o, i), true), u;
+  }
+  var a = {};
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+  t = Object.getPrototypeOf;
+  var c = [][n] ? t(t([][n]())) : (_regeneratorDefine(t = {}, n, function () {
+      return this;
+    }), t),
+    u = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(c);
+  function f(e) {
+    return Object.setPrototypeOf ? Object.setPrototypeOf(e, GeneratorFunctionPrototype) : (e.__proto__ = GeneratorFunctionPrototype, _regeneratorDefine(e, o, "GeneratorFunction")), e.prototype = Object.create(u), e;
+  }
+  return GeneratorFunction.prototype = GeneratorFunctionPrototype, _regeneratorDefine(u, "constructor", GeneratorFunctionPrototype), _regeneratorDefine(GeneratorFunctionPrototype, "constructor", GeneratorFunction), GeneratorFunction.displayName = "GeneratorFunction", _regeneratorDefine(GeneratorFunctionPrototype, o, "GeneratorFunction"), _regeneratorDefine(u), _regeneratorDefine(u, o, "Generator"), _regeneratorDefine(u, n, function () {
+    return this;
+  }), _regeneratorDefine(u, "toString", function () {
+    return "[object Generator]";
+  }), (_regenerator = function () {
+    return {
+      w: i,
+      m: f
+    };
+  })();
+}
+function _regeneratorDefine(e, r, n, t) {
+  var i = Object.defineProperty;
+  try {
+    i({}, "", {});
+  } catch (e) {
+    i = 0;
+  }
+  _regeneratorDefine = function (e, r, n, t) {
+    function o(r, n) {
+      _regeneratorDefine(e, r, function (e) {
+        return this._invoke(r, n, e);
+      });
+    }
+    r ? i ? i(e, r, {
+      value: n,
+      enumerable: !t,
+      configurable: !t,
+      writable: !t
+    }) : e[r] = n : (o("next", 0), o("throw", 1), o("return", 2));
+  }, _regeneratorDefine(e, r, n, t);
 }
 function _slicedToArray(r, e) {
   return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest();
@@ -879,13 +1012,21 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     style = _ref$style === void 0 ? {} : _ref$style,
     _ref$className = _ref.className,
     className = _ref$className === void 0 ? "" : _ref$className,
+    _ref$menuClass = _ref.menuClass,
+    menuClass = _ref$menuClass === void 0 ? "" : _ref$menuClass,
+    _ref$buttonClass = _ref.buttonClass,
+    buttonClass = _ref$buttonClass === void 0 ? "" : _ref$buttonClass,
+    _ref$canvasClass = _ref.canvasClass,
+    canvasClass = _ref$canvasClass === void 0 ? "" : _ref$canvasClass,
     value = _ref.value,
     onChange = _ref.onChange,
     _ref$height = _ref.height,
-    height = _ref$height === void 0 ? "300px" : _ref$height;
+    height = _ref$height === void 0 ? "300px" : _ref$height,
+    renderMenu = _ref.renderMenu;
   var canvasRef = React.useRef(null);
   var sigPadRef = React.useRef(null);
   var undoDataRef = React.useRef([]);
+  var styles = "\n        .rsl-signature-menu span, .rsl-signature-menu label{\n          color: #4e4e4e;\n        }\n\n        .rsl-redo-btn, .rsl-undo-btn, .rsl-download-btn, .rsl-clear-btn{\n          display: flex;\n          justify-content: space-between;\n          align-items: center;\n        }\n\n        .rsl-signature-con {\n          position: relative;\n        }\n\n        /* MENU BUTTON */\n        .rsl-menu-con {\n          position: absolute;\n          top: 10px;\n          left: 10px;\n          z-index: 100;\n        }\n\n        .rsl-menu-icon {\n          width: 40px;\n          height: 40px;\n          background: #111;\n          color: #fff;\n          display: flex;\n          align-items: center;\n          justify-content: center;\n          border-radius: 8px;\n          cursor: pointer;\n          font-size: 18px;\n        }\n\n        /* DROPDOWN */\n        .rsl-signature-menu {\n          margin-top: 10px;\n          width: 180px;\n          background: var(--rsl-menu-bg, white);\n          border-radius: 10px;\n          padding: 10px;\n          box-shadow: 0 10px 25px rgba(0,0,0,0.15);\n\n          display: flex;\n          flex-direction: column;\n          gap: 8px;\n        }\n\n        /* BUTTONS */\n        .rsl-signature-menu button {\n          padding: 8px;\n          border: none;\n          background: var(--rsl-btn-bg, #f3f4f6);\n          color: var(--rsl-btn-color, black);\n          cursor: pointer;\n          text-align: left;\n          color: #111;\n        }\n\n        .rsl-signature-menu button:hover {\n          background: #e5e7eb;\n        }\n\n        /* INPUT GROUP */\n        .rsl-menu-group {\n          display: flex;\n          flex-direction: column;\n          gap: 5px;\n          font-size: 12px;\n        }\n\n        /* CANVAS */\n        .rsl-canvas {\n          width: 100%;\n          border-radius: 10px;\n        }\n\n        /* HEADER */\n        .rsl-menu-header {\n          display: flex;\n          justify-content: space-between;\n          align-items: center;\n          font-weight: bold;\n          margin-bottom: 5px;\n        }\n\n        /* CLOSE BUTTON */\n        .rsl-close-btn {\n          background: transparent;\n          border: none;\n          font-size: 16px;\n          cursor: pointer;\n          color: #555;\n        }\n\n        .rsl-close-btn:hover {\n          color: red;\n        }\n\n      ";
   var _useState = React.useState(false),
     _useState2 = _slicedToArray(_useState, 2),
     menuOpen = _useState2[0],
@@ -902,6 +1043,13 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     _useState8 = _slicedToArray(_useState7, 2),
     strokeWidth = _useState8[0],
     setStrokeWidth = _useState8[1];
+  React.useEffect(function () {
+    if (document.getElementById("rsl-styles")) return;
+    var style = document.createElement("style");
+    style.id = "rsl-styles";
+    style.innerHTML = styles;
+    document.head.appendChild(style);
+  }, []);
 
   // ✅ INIT ONLY ONCE
   React.useEffect(function () {
@@ -996,6 +1144,36 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     a.download = "signature.png";
     a.click();
   };
+  var getSignatureBase64 = function getSignatureBase64() {
+    if (sigPadRef.current.isEmpty()) return "";
+    return sigPadRef.current.toDataURL();
+  };
+  var getSignatureBlob = /*#__PURE__*/function () {
+    var _ref2 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
+      var dataURL;
+      return _regenerator().w(function (_context) {
+        while (1) switch (_context.n) {
+          case 0:
+            if (!sigPadRef.current.isEmpty()) {
+              _context.n = 1;
+              break;
+            }
+            return _context.a(2, null);
+          case 1:
+            dataURL = sigPadRef.current.toDataURL();
+            _context.n = 2;
+            return fetch(dataURL).then(function (res) {
+              return res.blob();
+            });
+          case 2:
+            return _context.a(2, _context.v);
+        }
+      }, _callee);
+    }));
+    return function getSignatureBlob() {
+      return _ref2.apply(this, arguments);
+    };
+  }();
 
   // ✅ Check empty
   var isEmpty = function isEmpty() {
@@ -1007,15 +1185,43 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
       redo: redo,
       clear: clear,
       download: download,
-      isEmpty: isEmpty
+      isEmpty: isEmpty,
+      getSignatureBase64: getSignatureBase64,
+      getSignatureBlob: getSignatureBlob
     };
   });
+
+  // ✅ API FOR renderMenu
+  var api = {
+    undo: undo,
+    redo: redo,
+    clear: clear,
+    download: download,
+    isEmpty: isEmpty,
+    penColor: penColor,
+    bgColor: bgColor,
+    strokeWidth: strokeWidth,
+    setPenColor: setPenColor,
+    setBgColor: setBgColor,
+    setStrokeWidth: setStrokeWidth,
+    closeMenu: function closeMenu() {
+      return setMenuOpen(false);
+    },
+    openMenu: function openMenu() {
+      return setMenuOpen(true);
+    }
+  };
   return /*#__PURE__*/React.createElement("div", {
-    className: "rsl-signature-con"
+    className: "rsl-signature-con ".concat(className)
   }, /*#__PURE__*/React.createElement("div", {
     className: "rsl-menu-con"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "rsl-menu-icon",
+  }, renderMenu ?
+  // 🔥 CUSTOM MENU (USER CONTROL)
+  renderMenu(api) :
+  /*#__PURE__*/
+  // ✅ DEFAULT MENU (WITH SVG)
+  React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "rsl-menu-icon ".concat(menuClass),
     onClick: function onClick() {
       return setMenuOpen(true);
     }
@@ -1031,17 +1237,47 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     }
   }, "\u2715")), /*#__PURE__*/React.createElement("button", {
     type: "button",
+    className: "rsl-undo-btn ".concat(buttonClass),
     onClick: undo
-  }, "Undo"), /*#__PURE__*/React.createElement("button", {
+  }, "Undo", /*#__PURE__*/React.createElement("svg", {
+    width: "20px",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M7.18,4 8.6,5.44 6.06,8h9.71a6,6,0,0,1,0,12h-2V18h2a4,4,0,0,0,0-8H6.06L8.6,12.51 7.18,13.92 2.23,9Z"
+  }))), /*#__PURE__*/React.createElement("button", {
     type: "button",
+    className: "rsl-redo-btn ".concat(buttonClass),
     onClick: redo
-  }, "Redo"), /*#__PURE__*/React.createElement("button", {
+  }, "Redo", /*#__PURE__*/React.createElement("svg", {
+    width: "20px",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/React.createElement("path", {
+    fillRule: "evenodd",
+    clipRule: "evenodd",
+    d: "M15.2929 3.29289C15.6834 2.90237 16.3166 2.90237 16.7071 3.29289L21.4142 8L16.7071 12.7071C16.3166 13.0976 15.6834 13.0976 15.2929 12.7071C14.9024 12.3166 14.9024 11.6834 15.2929 11.2929L17.5858 9H10C7.23858 9 5 11.2386 5 14C5 16.7614 7.23857 19 10 19H15.8462C16.3984 19 16.8462 19.4477 16.8462 20C16.8462 20.5523 16.3984 21 15.8462 21H10C6.134 21 3 17.866 3 14C3 10.134 6.13401 7 10 7H17.5858L15.2929 4.70711C14.9024 4.31658 14.9024 3.68342 15.2929 3.29289Z"
+  }))), /*#__PURE__*/React.createElement("button", {
     type: "button",
+    className: "rsl-clear-btn ".concat(buttonClass),
     onClick: clear
-  }, "Clear"), /*#__PURE__*/React.createElement("button", {
+  }, "Clear", /*#__PURE__*/React.createElement("svg", {
+    width: "20px",
+    viewBox: "0 0 640 640"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M232.7 69.9C237.1 56.8 249.3 48 263.1 48L377 48C390.8 48 403 56.8 407.4 69.9L416 96L512 96C529.7 96 544 110.3 544 128C544 145.7 529.7 160 512 160L128 160C110.3 160 96 145.7 96 128C96 110.3 110.3 96 128 96L224 96L232.7 69.9zM128 208L512 208L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 208z"
+  }))), /*#__PURE__*/React.createElement("button", {
     type: "button",
+    className: "rsl-download-btn ".concat(buttonClass),
     onClick: download
-  }, "Download"), /*#__PURE__*/React.createElement("div", {
+  }, "Download", /*#__PURE__*/React.createElement("svg", {
+    width: "20px",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M12 15V4M12 15L9 12M12 15L15 12M4 20H20",
+    stroke: "black",
+    strokeWidth: "2",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }))), /*#__PURE__*/React.createElement("div", {
     className: "rsl-menu-group"
   }, /*#__PURE__*/React.createElement("label", null, "Pen Color"), /*#__PURE__*/React.createElement("input", {
     type: "color",
@@ -1067,9 +1303,9 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     onChange: function onChange(e) {
       return setStrokeWidth(Number(e.target.value));
     }
-  })))), /*#__PURE__*/React.createElement("canvas", {
+  }))))), /*#__PURE__*/React.createElement("canvas", {
     ref: canvasRef,
-    className: "rsl-canvas ".concat(className),
+    className: "rsl-canvas ".concat(canvasClass),
     style: _objectSpread2({
       height: height,
       background: bgColor
