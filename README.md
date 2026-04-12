@@ -92,6 +92,8 @@ const blob = await sigRef.current.getSignatureBlob();
 
 />
 
+```
+
 ## 🧰 Utility
 
 ```js
