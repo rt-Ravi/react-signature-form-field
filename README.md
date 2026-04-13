@@ -194,5 +194,58 @@ await fetch("http://localhost:5000/upload-base64", {
 });
 ```
 
+## 🎨 Styling Options
+
+Pass custom class names to target specific parts of the component:
+
+```jsx
+<Signature
+  className="wrapper"        // Main container
+  canvasClass="canvas"      // Canvas element
+  menuClass="menu-icon"     // Menu toggle icon
+  buttonClass="btn"         // Buttons inside menu
+/>
+```
+
+| Prop          | Description                                        |
+| ------------- | -------------------------------------------------- |
+| `className`   | Wrapper container of the signature pad             |
+| `canvasClass` | Canvas element where drawing happens               |
+| `menuClass`   | Menu toggle (☰ icon) styling                       |
+| `buttonClass` | Buttons inside the default menu (Undo, Redo, etc.) |
+
+
+## 🎨 Using Inline Style
+
+You can directly apply styles to the canvas:
+
+```jsx
+<Signature
+  style={{ border: "2px solid red", borderRadius: "12px" }}
+/>
+```
+
+## 🎨 Using CSS Variables
+
+Customize default UI colors using built-in CSS variables:
+
+```css
+.rsl-signature-menu {
+  --rsl-menu-bg: #222;
+}
+
+.rsl-signature-menu button {
+  --rsl-btn-bg: #444;
+  --rsl-btn-color: #fff;
+}
+```
+
+| Variable          | Description             |
+| ----------------- | ----------------------- |
+| `--rsl-menu-bg`   | Menu background color   |
+| `--rsl-btn-bg`    | Button background color |
+| `--rsl-btn-color` | Button text color       |
+
+
 ## 🙌 Author
 Ravi Thakur
