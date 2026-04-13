@@ -1031,18 +1031,22 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     _useState2 = _slicedToArray(_useState, 2),
     menuOpen = _useState2[0],
     setMenuOpen = _useState2[1];
-  var _useState3 = React.useState("#000000"),
+  var _useState3 = React.useState("image/png"),
     _useState4 = _slicedToArray(_useState3, 2),
-    penColor = _useState4[0],
-    setPenColor = _useState4[1];
-  var _useState5 = React.useState("#ffffff"),
+    downloadType = _useState4[0],
+    setDownloadType = _useState4[1];
+  var _useState5 = React.useState("#000000"),
     _useState6 = _slicedToArray(_useState5, 2),
-    bgColor = _useState6[0],
-    setBgColor = _useState6[1];
-  var _useState7 = React.useState(2),
+    penColor = _useState6[0],
+    setPenColor = _useState6[1];
+  var _useState7 = React.useState("#ffffff"),
     _useState8 = _slicedToArray(_useState7, 2),
-    strokeWidth = _useState8[0],
-    setStrokeWidth = _useState8[1];
+    bgColor = _useState8[0],
+    setBgColor = _useState8[1];
+  var _useState9 = React.useState(2),
+    _useState0 = _slicedToArray(_useState9, 2),
+    strokeWidth = _useState0[0],
+    setStrokeWidth = _useState0[1];
   React.useEffect(function () {
     if (document.getElementById("rsl-styles")) return;
     var style = document.createElement("style");
@@ -1137,11 +1141,25 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
 
   // ✅ Download
   var download = function download() {
+    console.log("fsd");
     if (sigPadRef.current.isEmpty()) return;
-    var dataURL = sigPadRef.current.toDataURL();
+    var dataURL;
+    var fileName = "signature";
+    if (downloadType === "image/jpeg") {
+      // JPEG (with quality control)
+      dataURL = sigPadRef.current.toDataURL("image/jpeg", 0.9);
+      fileName += ".jpg";
+    } else if (downloadType === "image/png") {
+      // Default PNG
+      dataURL = sigPadRef.current.toDataURL("image/png");
+      fileName += ".png";
+    } else {
+      dataURL = sigPadRef.current.toDataURL("image/svg+xml");
+      fileName += ".svg";
+    }
     var a = document.createElement("a");
     a.href = dataURL;
-    a.download = "signature.png";
+    a.download = fileName;
     a.click();
   };
   var getSignatureBase64 = function getSignatureBase64() {
@@ -1278,6 +1296,19 @@ var Signature = /*#__PURE__*/React.forwardRef(function (_ref, ref) {
     strokeLinecap: "round",
     strokeLinejoin: "round"
   }))), /*#__PURE__*/React.createElement("div", {
+    className: "rsl-menu-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Download Type"), /*#__PURE__*/React.createElement("select", {
+    value: downloadType,
+    onChange: function onChange(e) {
+      return setDownloadType(e.target.value);
+    }
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "image/png"
+  }, "PNG"), /*#__PURE__*/React.createElement("option", {
+    value: "image/jpeg"
+  }, "JPEG"), /*#__PURE__*/React.createElement("option", {
+    value: "image/svg+xml"
+  }, "SVG"))), /*#__PURE__*/React.createElement("div", {
     className: "rsl-menu-group"
   }, /*#__PURE__*/React.createElement("label", null, "Pen Color"), /*#__PURE__*/React.createElement("input", {
     type: "color",

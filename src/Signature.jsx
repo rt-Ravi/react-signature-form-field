@@ -118,6 +118,7 @@ const Signature = forwardRef(
 
 
     const [menuOpen, setMenuOpen] = useState(false);
+    const [downloadType, setDownloadType] = useState("image/png");
 
     const [penColor, setPenColor] = useState("#000000");
     const [bgColor, setBgColor] = useState("#ffffff");
@@ -235,12 +236,28 @@ const Signature = forwardRef(
     const download = () => {
       if (sigPadRef.current.isEmpty()) return;
 
-      const dataURL = sigPadRef.current.toDataURL();
+      let dataURL;
+      let fileName = "signature";
+
+      if (downloadType === "image/jpeg") {
+        // JPEG (with quality control)
+        dataURL = sigPadRef.current.toDataURL("image/jpeg", 0.9);
+        fileName += ".jpg";
+      } else if(downloadType === "image/png"){
+        // Default PNG
+        dataURL = sigPadRef.current.toDataURL("image/png");
+        fileName += ".png";
+      }else{
+        dataURL = sigPadRef.current.toDataURL("image/svg+xml");
+        fileName += ".svg";
+      }
+
       const a = document.createElement("a");
       a.href = dataURL;
-      a.download = "signature.png";
+      a.download = fileName;
       a.click();
     };
+
 
     const getSignatureBase64 = () => {
       if (sigPadRef.current.isEmpty()) return "";
@@ -288,10 +305,10 @@ const Signature = forwardRef(
 
     return (
       <div className={`rsl-signature-con ${className}`}>
-
+    
         {/* MENU */}
         <div className="rsl-menu-con">
-
+    
           {renderMenu ? (
             // 🔥 CUSTOM MENU (USER CONTROL)
             renderMenu(api)
@@ -304,10 +321,10 @@ const Signature = forwardRef(
               >
                 ☰
               </div>
-
+    
               {menuOpen && (
                 <div className="rsl-signature-menu">
-
+    
                   {/* HEADER */}
                   <div className="rsl-menu-header">
                     <span>Tools</span>
@@ -319,7 +336,7 @@ const Signature = forwardRef(
                       ✕
                     </button>
                   </div>
-
+    
                   {/* UNDO */}
                   <button
                     type="button"
@@ -331,7 +348,7 @@ const Signature = forwardRef(
                       <path d="M7.18,4 8.6,5.44 6.06,8h9.71a6,6,0,0,1,0,12h-2V18h2a4,4,0,0,0,0-8H6.06L8.6,12.51 7.18,13.92 2.23,9Z" />
                     </svg>
                   </button>
-
+    
                   {/* REDO */}
                   <button
                     type="button"
@@ -347,7 +364,7 @@ const Signature = forwardRef(
                       />
                     </svg>
                   </button>
-
+    
                   {/* CLEAR */}
                   <button
                     type="button"
@@ -359,7 +376,7 @@ const Signature = forwardRef(
                       <path d="M232.7 69.9C237.1 56.8 249.3 48 263.1 48L377 48C390.8 48 403 56.8 407.4 69.9L416 96L512 96C529.7 96 544 110.3 544 128C544 145.7 529.7 160 512 160L128 160C110.3 160 96 145.7 96 128C96 110.3 110.3 96 128 96L224 96L232.7 69.9zM128 208L512 208L512 512C512 547.3 483.3 576 448 576L192 576C156.7 576 128 547.3 128 512L128 208z" />
                     </svg>
                   </button>
-
+    
                   {/* DOWNLOAD */}
                   <button
                     type="button"
@@ -377,7 +394,20 @@ const Signature = forwardRef(
                       />
                     </svg>
                   </button>
-
+    
+                  {/* ✅ NEW: DOWNLOAD TYPE */}
+                  <div className="rsl-menu-group">
+                    <label>Download Type</label>
+                    <select
+                      value={downloadType}
+                      onChange={(e) => setDownloadType(e.target.value)}
+                    >
+                      <option value="image/png">PNG</option>
+                      <option value="image/jpeg">JPEG</option>
+                      <option value="image/svg+xml">SVG</option>
+                    </select>
+                  </div>
+    
                   {/* PEN COLOR */}
                   <div className="rsl-menu-group">
                     <label>Pen Color</label>
@@ -387,7 +417,7 @@ const Signature = forwardRef(
                       onChange={(e) => setPenColor(e.target.value)}
                     />
                   </div>
-
+    
                   {/* BACKGROUND */}
                   <div className="rsl-menu-group">
                     <label>Background</label>
@@ -397,7 +427,7 @@ const Signature = forwardRef(
                       onChange={(e) => setBgColor(e.target.value)}
                     />
                   </div>
-
+    
                   {/* STROKE */}
                   <div className="rsl-menu-group">
                     <label>Stroke</label>
@@ -411,13 +441,13 @@ const Signature = forwardRef(
                       }
                     />
                   </div>
-
+    
                 </div>
               )}
             </>
           )}
         </div>
-
+    
         {/* CANVAS */}
         <canvas
           ref={canvasRef}
@@ -430,6 +460,7 @@ const Signature = forwardRef(
         />
       </div>
     );
+    
 
   }
 );
