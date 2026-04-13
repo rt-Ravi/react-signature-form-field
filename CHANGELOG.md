@@ -2,6 +2,9 @@
 
 All notable changes to this project will be documented here.
 
+## [1.0.0] - Textual changes
+- Update readme file
+
 ## [1.0.0] - Initial Release
 ### Added
 - Signature canvas using signature_pad
