@@ -2,7 +2,11 @@
 
 All notable changes to this project will be documented here.
 
-## [1.0.0] - Textual changes
+## [1.0.2] - 2026-04-14
+### Added
+- Support for downloading images in SVG format
+
+## [1.0.1] - Textual changes
 - Update readme file
 
 ## [1.0.0] - Initial Release
